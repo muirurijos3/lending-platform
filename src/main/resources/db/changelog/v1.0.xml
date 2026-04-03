@@ -1,0 +1,134 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1" author="lending-platform">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="date_created" type="TIMESTAMP"/>
+            <column name="date_updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="lending-platform">
+        <createTable tableName="customer">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="credit_limit" type="DECIMAL(19,4)"/>
+            <column name="date_created" type="TIMESTAMP"/>
+            <column name="date_updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="lending-platform">
+        <createTable tableName="loan_product">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="interest_rate" type="DECIMAL(5,2)"/>
+            <column name="tenure_months" type="INT"/>
+            <column name="max_amount" type="DECIMAL(19,4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="lending-platform">
+        <createTable tableName="loan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_loan_customer"
+                             references="customer(id)"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints foreignKeyName="fk_loan_product"
+                             references="loan_product(id)"/>
+            </column>
+            <column name="amount" type="DECIMAL(19,4)"/>
+            <column name="balance" type="DECIMAL(19,4)"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="date_created" type="TIMESTAMP"/>
+            <column name="date_updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="lending-platform">
+        <createTable tableName="repayment_schedule">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="loan_id" type="BIGINT">
+                <constraints nullable="false" unique="true"
+                             foreignKeyName="fk_schedule_loan"
+                             references="loan(id)"/>
+            </column>
+            <column name="total_installments" type="INT"/>
+            <column name="monthly_installment_amount" type="DECIMAL(19,4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="lending-platform">
+        <createTable tableName="installment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="schedule_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_installment_schedule"
+                             references="repayment_schedule(id)"/>
+            </column>
+            <column name="installment_number" type="INT"/>
+            <column name="due_date" type="DATE"/>
+            <column name="principal_amount" type="DECIMAL(19,4)"/>
+            <column name="interest_amount" type="DECIMAL(19,4)"/>
+            <column name="total_due" type="DECIMAL(19,4)"/>
+            <column name="amount_paid" type="DECIMAL(19,4)"/>
+            <column name="status" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Seed data: one loan product and one customer to demonstrate key flows -->
+    <changeSet id="7" author="lending-platform">
+        <insert tableName="loan_product">
+            <column name="id" value="1"/>
+            <column name="name" value="Personal Loan 12M"/>
+            <column name="interest_rate" value="12.00"/>
+            <column name="tenure_months" value="12"/>
+            <column name="max_amount" value="50000.00"/>
+        </insert>
+        <insert tableName="loan_product">
+            <column name="id" value="2"/>
+            <column name="name" value="Short Term 3M"/>
+            <column name="interest_rate" value="18.00"/>
+            <column name="tenure_months" value="3"/>
+            <column name="max_amount" value="5000.00"/>
+        </insert>
+        <insert tableName="customer">
+            <column name="id" value="1"/>
+            <column name="first_name" value="Joseph"/>
+            <column name="last_name" value="Doe"/>
+            <column name="email" value="Joseph.doe@example.com"/>
+            <column name="credit_limit" value="30000.00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
