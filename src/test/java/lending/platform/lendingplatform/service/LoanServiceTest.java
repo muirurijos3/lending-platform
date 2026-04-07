@@ -1,11 +1,9 @@
 package lending.platform.lendingplatform.service;
 
 import lending.platform.lendingplatform.domain.*;
+import lending.platform.lendingplatform.dto.LoanRequestDTO;
 import lending.platform.lendingplatform.enumeration.LoanStatus;
-import lending.platform.lendingplatform.repository.CustomerRepository;
-import lending.platform.lendingplatform.repository.InstallmentRepository;
-import lending.platform.lendingplatform.repository.LoanRepository;
-import lending.platform.lendingplatform.repository.RepaymentScheduleRepository;
+import lending.platform.lendingplatform.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,11 +23,18 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class LoanServiceTest {
 
-    @Mock private LoanRepository loanRepository;
-    @Mock private RepaymentScheduleRepository repaymentScheduleRepository;
-    @Mock private InstallmentRepository installmentRepository;
-    @Mock private EventPublisher eventPublisher;
-    @Mock private CustomerRepository customerRepository;
+    @Mock
+    private LoanRepository loanRepository;
+    @Mock
+    private LoanProductRepository loanProductRepository;
+    @Mock
+    private RepaymentScheduleRepository repaymentScheduleRepository;
+    @Mock
+    private InstallmentRepository installmentRepository;
+    @Mock
+    private EventPublisher eventPublisher;
+    @Mock
+    private CustomerRepository customerRepository;
 
     @InjectMocks
     private LoanService loanService;
@@ -65,8 +70,28 @@ public class LoanServiceTest {
     }
 
     @Test
-    @DisplayName("createLoan")
+    @DisplayName("createLoan - Happy path")
     void createLoan() {
+        LoanRequestDTO loanRequestDTO = new LoanRequestDTO();
+        loanRequestDTO.setCustomerId(500L);
+        loanRequestDTO.setProductId(500L);
+        loanRequestDTO.setAmount(new BigDecimal("12000.00"));
+
+        when(customerRepository.findById(500L)).thenReturn(Optional.of(customer));
+        when(loanProductRepository.findById(500L)).thenReturn(Optional.of(product));
+        when(loanRepository.save(any(Loan.class))).thenAnswer(i -> {
+            Loan newLoan = i.getArgument(0);
+            newLoan.setId(99L);
+            return newLoan;
+        });
+
+        Loan result = loanService.createLoan(loanRequestDTO);
+        assertThat(result.getStatus()).isEqualTo(LoanStatus.CREATED);
+        assertThat(result.getCustomer().getId()).isEqualTo(500L);
+        assertThat(result.getAmount()).isEqualTo(new BigDecimal("12000.00"));
+        assertThat(result.getBalance()).isEqualTo(new BigDecimal("12000.00"));
+        assertThat(result.getLoanProduct()).isEqualTo(product);
+        assertThat(result.getCustomer()).isEqualTo(customer);
     }
 
     @Test
