@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Table(name = "loan")
 public class Loan extends AuditClass{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

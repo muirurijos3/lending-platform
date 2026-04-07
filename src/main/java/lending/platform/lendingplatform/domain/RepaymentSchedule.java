@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Table(name = "repayment_schedule")
 public class RepaymentSchedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
