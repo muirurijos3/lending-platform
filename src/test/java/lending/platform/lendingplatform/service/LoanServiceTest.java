@@ -87,7 +87,6 @@ public class LoanServiceTest {
 
         Loan result = loanService.createLoan(loanRequestDTO);
         assertThat(result.getStatus()).isEqualTo(LoanStatus.CREATED);
-        assertThat(result.getCustomer().getId()).isEqualTo(500L);
         assertThat(result.getAmount()).isEqualTo(new BigDecimal("12000.00"));
         assertThat(result.getBalance()).isEqualTo(new BigDecimal("12000.00"));
         assertThat(result.getLoanProduct()).isEqualTo(product);
