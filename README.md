@@ -84,7 +84,7 @@ gradle bootRun
 
 * Defines loan rules (interest rate, tenure, limits)
 * Designed to support multiple product types
-* Can be extended using groovy for different rules - down side is this can be easily manipulated by engineers
+* Extend using groovy for different rules - disadvantage is this can be easily manipulated by engineers
 
 ### 3. Loan Lifecycle Management
 
@@ -124,8 +124,8 @@ This enables:
 * Analytics
 * Fraud detection
 
-without modifying core logic.
-Logging is enabled though not system wide - areas for improvement.
+Without modifying core logic.
+Logging is enabled though not system-wide - areas for improvement.
 
 ---
 
@@ -133,7 +133,7 @@ Logging is enabled though not system wide - areas for improvement.
 
 To ensure consistency between database writes and event publishing:
 
-1. Business data and event are stored in the same transaction
+1. Business data and events are stored in the same transaction
 2. Events are saved in an `outbox_events` table
 3. A scheduled job publishes events asynchronously
 
@@ -185,7 +185,7 @@ Centralized exception handling using `@RestControllerAdvice` We do have issues w
 Features:
 
 * Consistent API error responses
-* Separation of business vs system errors
+* Separation of business versus system errors
 * Validation error mapping
 
 ---
@@ -227,29 +227,34 @@ Goal:
 ## 🧱 Design Patterns Used
 
 * **Outbox Pattern** → Reliable event publishing
-* **Strategy Pattern** → Kafka vs Local event publisher
+* **Strategy Pattern** → Kafka versus Local event publisher
 * **DTO Pattern** → API-layer abstraction
 * **Global Exception Handling** → Consistent error responses
 
 ---
 
 ## 🔮 Future Improvements
+### 💼 Business
 
-* Kafka consumer for notifications (SMS/Email)
-* Scheduled jobs Defaulting customers - Disable customers/blacklist etc
-* Exhaustive Audit logging
+* Scheduled jobs Defaulting customers - Disable customers/debar etc. 
+* Repayment schedules automation, reminders via SMS and Email
 * Fraud detection - use of AI can assist
-* Repayment schedules
 * Multi-currency support
+
+### ⚙️ System
 * Authentication & authorization
+* Kafka consumer for notifications (SMS/Email)
+* Exhaustive Audit logging
 * Dockerized deployment
 * Change application to use mysql/postgres
+* GMT support
+* Internationalization
 
 ---
 
 ## ⚡ Key Design Decisions
 
-* Kept loan lifecycle simple but extensible
+* Kept the loan lifecycle simple but extensible
 * Avoided over-engineering (no complex state machine yet)
 * Decoupled event handling from core logic
 * Designed system to degrade gracefully without Kafka
