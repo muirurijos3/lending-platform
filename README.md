@@ -243,6 +243,7 @@ Goal:
 * Multi-currency support
 * Authentication & authorization
 * Dockerized deployment
+* Change application to use mysql/postgres
 
 ---
 

@@ -70,7 +70,17 @@ public class LoanServiceTest {
     }
 
     @Test
+    @DisplayName("transitioms loan status to approved")
     void approveLoan() {
+        Loan loan = new Loan();
+        loan.setId(100L);
+        loan.setStatus(LoanStatus.CREATED);
+
+        when(loanRepository.findById(loan.getId())).thenReturn(Optional.of(loan));
+        when(loanRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        Loan result = loanService.approveLoan(100L);
+        assertThat(result).isEqualTo(loan);
     }
 
     @Test
