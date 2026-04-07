@@ -32,7 +32,7 @@ Key focus areas:
 ## ⚙️ Tech Stack
 
 * Java 21
-* Spring Boot
+* Spring Boot 
 * Spring Data JPA
 * H2 (default, for easy local setup)
 * Kafka (optional)
@@ -84,7 +84,7 @@ gradle bootRun
 
 * Defines loan rules (interest rate, tenure, limits)
 * Designed to support multiple product types
-* can be extended using groovy for different rules - down side is this can be easily manipulated by engineers
+* Can be extended using groovy for different rules - down side is this can be easily manipulated by engineers
 
 ### 3. Loan Lifecycle Management
 
@@ -180,7 +180,7 @@ Example validations:
 
 ## ⚠️ Exception Handling
 
-Centralized exception handling using `@RestControllerAdvice`
+Centralized exception handling using `@RestControllerAdvice` We do have issues with springboot v4 and docs versioning 
 
 Features:
 
@@ -236,9 +236,9 @@ Goal:
 ## 🔮 Future Improvements
 
 * Kafka consumer for notifications (SMS/Email)
-* Scheduled jobs for overdue loans
+* Scheduled jobs Defaulting customers - Disable customers/blacklist etc
 * Exhaustive Audit logging
-* Fraud detection -> use of AI can assist
+* Fraud detection - use of AI can assist
 * Repayment schedules
 * Multi-currency support
 * Authentication & authorization

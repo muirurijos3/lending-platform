@@ -1,6 +1,7 @@
 package lending.platform.lendingplatform.service;
 
 import lending.platform.lendingplatform.domain.LoanEvent;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true")
+@RequiredArgsConstructor
 public class LoanEventConsumer {
     Logger log = LoggerFactory.getLogger(LoanEventConsumer.class);
-    @Autowired
-    NotificationService notificationService;
+    private final NotificationService notificationService;
 
     public void consume(LoanEvent event){
-        log.info("Consumed event:" + event);
         log.info("Consumed event: {}", event);
         switch (event.getEventType()) {
             case "LOAN_CREATED"    -> notificationService.sendNotification("Loan " + event.getLoanId() + " created");

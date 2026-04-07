@@ -1,5 +1,6 @@
 package lending.platform.lendingplatform.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
