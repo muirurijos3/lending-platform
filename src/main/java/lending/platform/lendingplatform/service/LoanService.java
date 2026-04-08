@@ -107,6 +107,10 @@ public class LoanService {
 
     }
 
+    /*
+    * The Full explanation of the formula is documented on google docs
+    * https://docs.google.com/document/d/129q--uusGOD0PxH3QHYcW-5DspE9ZU_HbEKZOCtEKyw/edit?usp=sharing
+    * */
     private RepaymentSchedule generateSchedule(Loan loan) {
         LoanProduct product = loan.getLoanProduct();
         int tenure = product.getTenureMonths();
